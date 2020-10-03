@@ -9,6 +9,8 @@ https://github.com/fnando/alfred-rubygems/releases/
 
 #### Usage
 
+![Alfred Rubygems Workflow in action](https://github.com/fnando/alfred-rubygems/raw/main/alfred-rubygems.gif)
+
 Type `gem <name>` and you'll be shown the results.
 
 You can use the following modifiers (when available):
