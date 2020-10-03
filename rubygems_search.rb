@@ -52,28 +52,23 @@ class AlfredWorkflow
 
     debug gem_data
 
-    mods = {}
-
-    if gem_data.source_code_uri
-      mods[:alt] = {
+    mods = {
+      alt: {
         arg: gem_data.source_code_uri,
-        subtitle: "Open #{gem_data.source_code_uri}"
-      }
-    end
-
-    if gem_data.homepage_uri
-      mods[:ctrl] = {
+        subtitle: "Open #{gem_data.source_code_uri}",
+        valid: !gem_data.source_code_uri.nil?
+      },
+      ctrl: {
         arg: gem_data.homepage_uri,
-        subtitle: "Open #{gem_data.homepage_uri}"
-      }
-    end
-
-    if gem_data.documentation_uri
-      mods[:cmd] = {
+        subtitle: "Open #{gem_data.homepage_uri}",
+        valid: !gem_data.homepage_uri.nil?
+      },
+      cmd: {
         arg: gem_data.documentation_uri,
-        subtitle: "Open #{gem_data.documentation_uri}"
+        subtitle: "Open #{gem_data.documentation_uri}",
+        valid: !gem_data.documentation_uri.nil?
       }
-    end
+    }
 
     items << {
       uid: gem_data.name,
@@ -103,23 +98,21 @@ class AlfredWorkflow
       )
     )
 
-    items << case error
-             when SocketError
-               {
-                 uid: "error",
-                 title: "Couldn't fetch information from rubygems.org",
-                 subtitle: "Search on rubygems.org instead",
-                 arg: "https://rubygems.org/search?query=#{CGI.escape(query)}",
-                 valid: true
-               }
-             else
-               {
-                 title: "Error: #{error.class}",
-                 subtitle: "Search on rubygems.org instead",
-                 arg: "https://rubygems.org/search?query=#{CGI.escape(query)}",
-                 valid: true
-               }
-             end
+    error_item = {
+      uid: "error",
+      subtitle: "Search on rubygems.org instead",
+      arg: "https://rubygems.org/search?query=#{CGI.escape(query)}",
+      valid: true
+    }
+
+    error_item[:title] = case error
+                         when SocketError
+                           "Couldn't fetch information from rubygems.org"
+                         else
+                           "Error: #{error.class}"
+                         end
+
+    items << error_item
   end
 end
 
