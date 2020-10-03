@@ -1,0 +1,7 @@
+gem.test=minitest
+build.puma=--with-opt-dir=/usr/local
+build.pg=--with-opt-dir=/usr/local
+build.eventmachine=--with-opt-dir=/usr/local --with-cppflags=-I/usr/local/opt/openssl/include
+build.mysql2=--with-ldflags=-L/usr/local/opt/openssl/lib --with-cppflags=-I/usr/local/opt/openssl/include
+path=./vendor
+jobs=3
