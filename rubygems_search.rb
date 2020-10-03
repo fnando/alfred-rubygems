@@ -52,24 +52,6 @@ class AlfredWorkflow
 
     debug gem_data
 
-    mods = {
-      alt: {
-        arg: gem_data.source_code_uri,
-        subtitle: "Open #{gem_data.source_code_uri}",
-        valid: !gem_data.source_code_uri.nil?
-      },
-      ctrl: {
-        arg: gem_data.homepage_uri,
-        subtitle: "Open #{gem_data.homepage_uri}",
-        valid: !gem_data.homepage_uri.nil?
-      },
-      cmd: {
-        arg: gem_data.documentation_uri,
-        subtitle: "Open #{gem_data.documentation_uri}",
-        valid: !gem_data.documentation_uri.nil?
-      }
-    }
-
     items << {
       uid: gem_data.name,
       title: gem_data.name,
@@ -77,7 +59,21 @@ class AlfredWorkflow
       arg: "https://rubygems.org/gems/#{gem_data.name}",
       icon: "#{__dir__}/icon.png",
       valid: true,
-      mods: mods
+      mods: {
+        alt: mod_item(title: "Source code url", arg: gem_data.source_code_uri),
+        ctrl: mod_item(title: "Home page url", arg: gem_data.homepage_uri),
+        cmd: mod_item(title: "Docs url", arg: gem_data.documentation_uri)
+      }
+    }
+  end
+
+  def mod_item(title:, arg:)
+    valid = !arg.to_s.empty?
+
+    {
+      valid: valid,
+      subtitle: valid ? "Open #{arg}" : "#{title} not available",
+      arg: arg
     }
   end
 
